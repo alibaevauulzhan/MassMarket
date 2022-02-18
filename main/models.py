@@ -18,3 +18,12 @@ class Product(CreatedAtModel):
 
     def __str__(self):
         return f"{self.title} -> Author: {self.author.email}"
+
+
+class Comment(CreatedAtModel):
+    comment = models.TextField()
+    author = models.ForeignKey('account.User', related_name='comments', on_delete=models.DO_NOTHING)
+    product = models.ForeignKey('Product', related_name='comments',on_delete=models.DO_NOTHING, null=True, blank=True)
+
+    def __str__(self):
+        return self.comment

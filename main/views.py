@@ -1,7 +1,7 @@
 from rest_framework.viewsets import ModelViewSet
 
-from .models import Product
-from .serializers import ProductSerializer
+from .models import Product, Comment
+from .serializers import ProductSerializer, CommentSerializer
 
 
 class ProductView(ModelViewSet):
@@ -17,3 +17,7 @@ class ProductView(ModelViewSet):
     def get_serializer(self, *args, **kwargs):
         kwargs['context'] = self.get_serializer_context()
         return self.serializer_class(*args, **kwargs)
+
+class CommentView(ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer

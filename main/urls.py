@@ -4,7 +4,7 @@ from .views import *
 
 router = DefaultRouter()
 router.register('product', ProductView)
-# router.register('reply', ReplyViewSet)
+router.register('comment', CommentView)
 
 
 urlpatterns = [
