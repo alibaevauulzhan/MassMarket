@@ -24,8 +24,12 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'account',
     'main',
+    'cart',
     'likes.apps.LikesConfig',
     'django_filters',
+
+    'drf_yasg',
+
 ]
 
 MIDDLEWARE = [
@@ -39,7 +43,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'MassMarket.urls'
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -115,6 +118,7 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 2
+
 }
 from datetime import timedelta
 SIMPLE_JWT = {

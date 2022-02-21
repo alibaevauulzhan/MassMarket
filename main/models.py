@@ -1,7 +1,11 @@
 from django.db import models
 from django.contrib.contenttypes.fields import GenericRelation
 
+from MassMarket import settings
 from likes.models import Like
+
+
+from django.db import models
 
 class CreatedAtModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -14,7 +18,7 @@ class Product(CreatedAtModel):
         ('electronics', 'electronics'),
         ('home', 'home'),
         ('clothing', 'clothing'),
-        ('beaty', 'beaty'),
+        ('beauty', 'beauty'),
         ('health', 'health'),
     ]
     category = models.CharField(max_length=20,choices=CATEGORY)
@@ -45,3 +49,5 @@ class Comment(CreatedAtModel):
 
     def __str__(self):
         return self.comment
+
+

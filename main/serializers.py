@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 import likes
+
 from .models import Product, Comment
 
 
@@ -43,3 +44,5 @@ class CommentSerializer(serializers.ModelSerializer):
             **validated_data
         )
         return comment
+
+

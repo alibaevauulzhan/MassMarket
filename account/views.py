@@ -1,12 +1,13 @@
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from account.serializers import RegistrationSerializer
-
+from account.serializers import RegistrationSerializer, CreateNewPasswordSerializer
+from account.utils import send_activation_code
+from .models import User
 
 class RegistrationView(APIView):
     def post(self, request):
@@ -33,3 +34,39 @@ class LogOutView(APIView):
         token = RefreshToken(token=refresh_token)
         token.blacklist()
         return Response("Вы вышли из своего аккаунта", status=205)
+
+
+
+
+
+
+
+
+
+
+class ForgotPasswordView(APIView):
+    def get(self, request, email):
+        user = get_object_or_404(User, email=email)
+        user.is_active = False
+        user.create_activation_code()
+        user.save()
+        send_activation_code(
+            email=user.email, activation_code=user.activation_code,
+            status='forgot_password'
+        )
+        return Response('Вам отпаравили письмо на почту', status=200)
+
+
+class CompleteRestPasswordView(APIView):
+    permission_classes = [AllowAny, ]
+
+    def post(self, request):
+        serializer = CreateNewPasswordSerializer(data=request)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(
+                'Вы успешно поменяли пароль', status=200
+            )
+
+
+
