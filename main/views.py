@@ -3,15 +3,16 @@ from django.db.models import Q
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status
 from rest_framework.decorators import action
+from rest_framework.mixins import UpdateModelMixin
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
 from likes.mixins import LikedMixin
-from .models import Product, Comment
+from .models import Product, Comment, Favorite
 from .permissions import IsProductAuthor
-from .serializers import ProductSerializer, CommentSerializer
+from .serializers import ProductSerializer, CommentSerializer, FavoriteSerializer
 
 
 class ProductView(ModelViewSet, LikedMixin):
@@ -57,6 +58,40 @@ class CommentView(ModelViewSet):
         else:
             permissions = []
         return [permission() for permission in permissions]
+
+
+
+
+
+# ------------------------------------------------------------------------------------------------------
+
+class FavoriteView(ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    queryset = Favorite.objects.all()
+    serializer_class = FavoriteSerializer
+    lookup_field = 'product'
+
+
+    def get_serializer_context(self):
+        return {'request': self.request}
+
+    def get_object(self):
+        obj, _ = Favorite.objects.get_or_create(user=self.request.user, product_id=self.kwargs['book'])
+        return obj
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

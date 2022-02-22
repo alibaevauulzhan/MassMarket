@@ -34,7 +34,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
 class CreateNewPasswordSerializer(serializers.Serializer):
     email = serializers.EmailField()
-    code = serializers.CharField(max_length=30, required=True)
+    code = serializers.CharField(max_length=50, required=True)
     password = serializers.CharField(max_length=4,required=True)
     password_confirm = serializers.CharField(max_length=4, required=True)
 
@@ -47,7 +47,7 @@ class CreateNewPasswordSerializer(serializers.Serializer):
 
     def validate_code(self, code):
         if not User.objects.filter(
-            activatiion_code=code,
+            activation_code=code,
             is_active=False
         ).exists():
             raise serializers.ValidationError(

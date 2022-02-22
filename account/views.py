@@ -61,7 +61,7 @@ class CompleteRestPasswordView(APIView):
     permission_classes = [AllowAny, ]
 
     def post(self, request):
-        serializer = CreateNewPasswordSerializer(data=request)
+        serializer = CreateNewPasswordSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(
